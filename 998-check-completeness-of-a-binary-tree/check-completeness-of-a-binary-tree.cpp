@@ -13,7 +13,7 @@ class Solution {
 public:
     bool isCompleteTree(TreeNode* root) {
         queue<TreeNode*> q;
-        vector<int> cbt;
+        bool nullFound = false;
         q.push(root);
 
         while(!q.empty()) {
@@ -22,19 +22,16 @@ public:
             for(int i = 0; i < size; i++) {
                 TreeNode* front = q.front(); q.pop();
                 if(front != NULL) {
-                    cbt.push_back(front->val);
+                    if(nullFound) {
+                        // that means we are standing on a element after NULL
+                        return false;
+                    }
                     q.push(front->left);
                     q.push(front->right);
                 } else {
-                    cbt.push_back(0);
+                    // front is null
+                    nullFound = true;
                 }
-            }
-        }
-
-        int n = cbt.size();
-        for(int i = 0; i < n; i++) {
-            if(cbt[i] == 0 && i + 1 < n && cbt[i + 1] != 0) {
-                return false;
             }
         }
 
